@@ -1,0 +1,5 @@
+<Solution>
+  <Project Path="CustomAuthMiddleware/CustomAuthMiddleware.csproj" Id="a11b7656-a5e5-4e37-84fe-e5580e7d794e" />
+  <Project Path="CustomMiddleware/CustomMiddleware.csproj" />
+  <Project Path="Middlewares/Middlewares.csproj" />
+</Solution>
