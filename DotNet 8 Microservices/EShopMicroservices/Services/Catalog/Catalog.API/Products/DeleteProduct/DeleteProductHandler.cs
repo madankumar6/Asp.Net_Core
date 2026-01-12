@@ -1,0 +1,27 @@
+﻿
+namespace Catalog.API.Products.DeleteProduct
+{
+    public record DeleteProductCommand(Guid ProductId) : ICommand<DeleteProductResult>;
+    public record DeleteProductResult(bool IsSuccess);
+
+    internal class DeleteProductCommandHandler(IDocumentSession session, ILogger<DeleteProductCommandHandler> logger) : ICommandHandler<DeleteProductCommand, DeleteProductResult>
+    {
+        public async Task<DeleteProductResult> Handle(DeleteProductCommand command, CancellationToken cancellationToken)
+        {
+            logger.LogInformation($"DeleteProductCommandHandler.Handle method called with the {command}");
+
+            var product = await session.LoadAsync<Product>(command.ProductId, cancellationToken);
+
+            if (product is null)
+            {
+                logger.LogWarning($"Product with Id {command.ProductId} not found.");
+                return new DeleteProductResult(IsSuccess: false);
+            }
+
+            session.Delete(product);
+            await session.SaveChangesAsync(cancellationToken);
+
+            return new DeleteProductResult(IsSuccess: true);
+        }
+    }
+}
