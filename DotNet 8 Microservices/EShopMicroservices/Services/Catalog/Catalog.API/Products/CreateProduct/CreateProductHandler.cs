@@ -1,14 +1,33 @@
 ﻿
+using Catalog.API.Products.GetProducts;
+
 namespace Catalog.API.Products.CreateProduct
 {
-    public record CreateProductCommand(string Name, List<string> Category, string Description, string ImageFile, decimal Price) 
+    public record CreateProductCommand(string Name, List<string> Category, string Description, string ImageFile, decimal Price)
         : ICommand<CreateProductResult>;
     public record CreateProductResult(Guid ProductId);
 
-    internal class CreateProductCommandHandler(IDocumentSession session) : ICommandHandler<CreateProductCommand, CreateProductResult>
+    public class CreateProductCommandValidator : AbstractValidator<CreateProductCommand> 
+    {
+        public CreateProductCommandValidator()
+        {
+            RuleFor(x => x.Name)
+                .NotEmpty().WithMessage("Product name is required.")
+                .MaximumLength(100).WithMessage("Product name must not exceed 100 characters.");
+            RuleFor(x => x.Category)
+                .NotEmpty().WithMessage("At least one category is required.");
+            RuleFor(x => x.Price)
+                .GreaterThan(0).WithMessage("Price must be greater than zero.");
+        }
+    }
+
+    internal class CreateProductCommandHandler(IDocumentSession session, ILogger<CreateProductCommandHandler> logger) 
+        : ICommandHandler<CreateProductCommand, CreateProductResult>
     {
         public async Task<CreateProductResult> Handle(CreateProductCommand command, CancellationToken cancellationToken)
         {
+            logger.LogInformation($"CreateProductCommandHandler.Handle method called with the {command}");
+
             var product = new Product
             {
                 Name = command.Name,

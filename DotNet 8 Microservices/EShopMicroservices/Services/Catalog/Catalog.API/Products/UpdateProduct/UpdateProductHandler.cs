@@ -1,9 +1,24 @@
 ﻿
-
 namespace Catalog.API.Products.UpdateProduct
 {
     public record UpdateProductCommand(Guid ProductId, string Name, string Description, List<string> Category, decimal Price) : ICommand<UpdateProductResult>;
     public record UpdateProductResult(bool IsSuccess);
+
+    public class UpdateProductCommandValidator : AbstractValidator<UpdateProductCommand>
+    {
+        public UpdateProductCommandValidator()
+        {
+            RuleFor(x => x.ProductId)
+                .NotEmpty().WithMessage("Product Id is required.");
+            RuleFor(x => x.Name)
+                .NotEmpty().WithMessage("Product name is required.")
+                .MaximumLength(100).WithMessage("Product name must not exceed 100 characters.");
+            RuleFor(x => x.Category)
+                .NotEmpty().WithMessage("At least one category is required.");
+            RuleFor(x => x.Price)
+                .GreaterThan(0).WithMessage("Price must be greater than zero.");
+        }
+    }
 
     public class UpdateProductCommandHandler(IDocumentSession session, ILogger<UpdateProductCommandHandler> logger) : ICommandHandler<UpdateProductCommand, UpdateProductResult>
     {
