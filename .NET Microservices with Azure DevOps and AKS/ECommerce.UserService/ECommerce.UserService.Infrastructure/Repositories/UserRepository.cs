@@ -17,11 +17,11 @@ namespace ECommerce.UserService.Infrastructure.Repositories
 
         public async Task<ApplicationUser> AddUser(ApplicationUser user)
         {
-            user.UserId = Guid.NewGuid();
+            user.UserID = Guid.NewGuid();
 
             //Sql query to insert user into database can be written here using _dapperDbContext
-            string sql = "INSERT INTO public.\"Users\" (\"UserId\", \"Email\", \"Password\", \"Name\", \"Gender\") " +
-                "VALUES (@UserId, @Email, @Password, @Name, @Gender)";
+            string sql = "INSERT INTO public.\"Users\" (\"UserID\", \"Email\", \"Password\", \"PersonName\", \"Gender\") " +
+                "VALUES (@UserID, @Email, @Password, @PersonName, @Gender)";
             var rowsAffected = await _dapperDbContext.DbConnection.ExecuteAsync(sql, user);
 
             if (rowsAffected > 0)

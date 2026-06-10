@@ -16,7 +16,7 @@ namespace ECommerce.UserService.Core.Validators
             RuleFor(x => x.Password).NotEmpty()
                 .WithMessage("Password is required");
 
-            RuleFor(x => x.Name).NotEmpty()
+            RuleFor(x => x.PersonName).NotEmpty()
                 .WithMessage("Name is required")
                 .MinimumLength(1)
                 .WithMessage("Minimum 1 character is required")

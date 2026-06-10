@@ -7,19 +7,17 @@ namespace ECommerce.ProductsService.Core.Validators
     {
         public ProductAddRequestValidator()
         {
-            RuleFor(x => x.Name)
+            RuleFor(x => x.ProductName)
                 .NotEmpty()
                 .WithMessage("Product name is required.")
                 .MaximumLength(100)
                 .WithMessage("Product name must not exceed 100 characters.");
 
             RuleFor(x => x.Category)
-                .NotEmpty()
-                .WithMessage("Product category is required.")
-                .MaximumLength(50)
-                .WithMessage("Product category must not exceed 50 characters.");
+                .IsInEnum()
+                .WithMessage("Product category is required.");
 
-            RuleFor(x => x.Price)
+            RuleFor(x => x.UnitPrice)
                 .NotEmpty()
                 .WithMessage("Product price is required.")
                 .GreaterThan(0)

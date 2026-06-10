@@ -23,10 +23,10 @@ namespace ECommerce.ProductsService.Infrastructure.Data
         {
             modelBuilder.Entity<Product>(entity =>
             {
-                entity.HasKey(e => e.ProductId);
-                entity.Property(e => e.Name).IsRequired().HasMaxLength(100);
+                entity.HasKey(e => e.ProductID);
+                entity.Property(e => e.ProductName).IsRequired().HasMaxLength(100);
                 entity.Property(e => e.Category).HasMaxLength(500);
-                entity.Property(e => e.Price).HasColumnType("decimal(18,2)");
+                entity.Property(e => e.UnitPrice).HasColumnType("decimal(18,2)");
             });
 
             base.OnModelCreating(modelBuilder);

@@ -6,10 +6,10 @@ namespace ECommerce.UserService.Core.Entities
     /// </summary>
     public class ApplicationUser
     {
-        public Guid UserId { get; set; }
+        public Guid UserID { get; set; }
         public required string Email { get; set; }
         public required string Password { get; set; }
-        public string? Name { get; set; }
+        public string? PersonName { get; set; }
         public string? Gender { get; set; }
     }
 }

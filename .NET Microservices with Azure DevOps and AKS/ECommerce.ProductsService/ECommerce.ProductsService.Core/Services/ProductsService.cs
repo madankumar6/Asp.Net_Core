@@ -4,6 +4,7 @@ using ECommerce.ProductsService.Core.Dtos.Response;
 using ECommerce.ProductsService.Core.Entities;
 using ECommerce.ProductsService.Core.RepositoryContracts;
 using ECommerce.ProductsService.Core.ServiceContracts;
+using System.Linq.Expressions;
 
 namespace ECommerce.ProductsService.Core.Services
 {
@@ -63,9 +64,22 @@ namespace ECommerce.ProductsService.Core.Services
             return result;
         }
 
-        public Task<ProductResponse> GetProductByCondition()
+        public async Task<ProductResponse> GetProductByCondition(Expression<Func<Product, bool>> predicate)
         {
-            throw new NotImplementedException();
+            var product = await _productsRepository.GetProductByCondition(predicate);
+
+            if (product == null)
+            {
+                return null;
+            }
+
+            return _mapper.Map<ProductResponse>(product);
+        }
+
+        public async Task<List<ProductResponse>> GetProductsByCondition(Expression<Func<Product, bool>> predicate)
+        {
+            var products = await _productsRepository.GetProductsByCondition(predicate);
+            return _mapper.Map<List<ProductResponse>>(products);
         }
     }
 }

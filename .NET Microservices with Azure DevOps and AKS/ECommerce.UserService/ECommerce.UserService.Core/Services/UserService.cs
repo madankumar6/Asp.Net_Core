@@ -45,7 +45,7 @@ namespace ECommerce.UserService.Core.Services
             return _mapper.Map<AuthenticationResponse>(user) with
             {
                 Token = "Dummy Token For Now",
-                IsSuccessful = true
+                Success = true
             };
         }
 
@@ -77,7 +77,7 @@ namespace ECommerce.UserService.Core.Services
             return _mapper.Map<AuthenticationResponse>(registeredUser) with
             {
                 Token = "Dummy Token For Now",
-                IsSuccessful = true
+                Success = true
             };
         }
     }

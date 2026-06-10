@@ -11,9 +11,13 @@ namespace ECommerce.ProductsService.Infrastructure
     {
         public static void AddInfrastructureServices(this IServiceCollection services, IConfiguration configuration)
         {
+            var connectionStringTemplate = configuration.GetConnectionString("MySqlConnection")!;
+            var connectionString = connectionStringTemplate
+                                .Replace("$MYSQL_HOST", Environment.GetEnvironmentVariable("MYSQL_HOST")!)
+                                .Replace("$MYSQL_PASSWORD", Environment.GetEnvironmentVariable("MYSQL_PASSWORD")!);
             // Register DbContext
             services.AddDbContext<ApplicationDbContext>(options =>
-                options.UseMySQL(configuration.GetConnectionString("MySqlConnection")));
+                options.UseMySQL(connectionString));
             // Register repositories
             services.AddScoped<IProductsRepository, ProductsRepository>();
             // Register other infrastructure services as needed

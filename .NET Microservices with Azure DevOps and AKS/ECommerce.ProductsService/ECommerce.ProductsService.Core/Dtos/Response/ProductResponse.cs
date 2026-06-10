@@ -3,10 +3,10 @@ namespace ECommerce.ProductsService.Core.Dtos.Response
 {
     public class ProductResponse
     {
-        public Guid ProductId { get; set; }
-        public string Name { get; set; }
+        public Guid ProductID { get; set; }
+        public string ProductName { get; set; }
         public string Category { get; set; }
-        public double? Price { get; set; }
+        public double? UnitPrice { get; set; }
         public int? QuantityInStock { get; set; }
     }
 }

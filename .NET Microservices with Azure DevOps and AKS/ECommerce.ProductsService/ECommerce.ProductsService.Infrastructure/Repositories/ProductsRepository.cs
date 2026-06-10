@@ -2,9 +2,7 @@
 using ECommerce.ProductsService.Core.RepositoryContracts;
 using ECommerce.ProductsService.Infrastructure.Data;
 using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Text;
+using System.Linq.Expressions;
 
 namespace ECommerce.ProductsService.Infrastructure.Repositories
 {
@@ -26,14 +24,14 @@ namespace ECommerce.ProductsService.Infrastructure.Repositories
 
         public async Task<Product> UpdateProduct(Product product)
         {
-            var existingProduct = await _context.Products.FindAsync(product.ProductId);
+            var existingProduct = await _context.Products.FindAsync(product.ProductID);
             if (existingProduct == null)
             {
                 return null;
             }
-            existingProduct.Name = product.Name;
+            existingProduct.ProductName = product.ProductName;
             existingProduct.Category = product.Category;
-            existingProduct.Price = product.Price;
+            existingProduct.UnitPrice = product.UnitPrice;
             existingProduct.QuantityInStock = product.QuantityInStock;
             
             _context.Products.Update(existingProduct);
@@ -60,15 +58,22 @@ namespace ECommerce.ProductsService.Infrastructure.Repositories
             return products;
         }
 
-        public Task<Product> GetProductByCondition()
-        {
-            throw new NotImplementedException();
-        }
-
         public async Task<Product> GetProductById(Guid productId)
         {
             var product = await _context.Products.FindAsync(productId);
             return product;
+        }
+
+        public async Task<List<Product>> GetProductsByCondition(Expression<Func<Product, bool>> predicate)
+        {
+            var products = await _context.Products.Where(predicate).ToListAsync();
+            return products;
+        }
+
+        public async Task<Product> GetProductByCondition(Expression<Func<Product, bool>> predicate)
+        {
+            var product = await _context.Products.FirstOrDefaultAsync(predicate);
+            return product; 
         }
     }
 }

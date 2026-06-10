@@ -41,7 +41,7 @@ namespace ECommerce.UserService.Api.Controllers
             }
 
             var userLoginResponse = await _userService.Login(request.Email, request.Password);
-            if (userLoginResponse is null || userLoginResponse.IsSuccessful == false)
+            if (userLoginResponse is null || userLoginResponse.Success == false)
             {
                 return BadRequest("User login failed.");
             }

@@ -14,7 +14,7 @@ namespace ECommerce.UserService.Core.MappingProfiles
             CreateMap<RegisterUserRequest, ApplicationUser>()
                 .ForMember(dest => dest.Email, opt => opt.MapFrom(src => src.Email))
                 .ForMember(dest => dest.Password, opt => opt.MapFrom(src => src.Password))
-                .ForMember(dest => dest.Name, opt => opt.MapFrom(src => src.Name))
+                .ForMember(dest => dest.PersonName, opt => opt.MapFrom(src => src.PersonName))
                 .ForMember(dest => dest.Gender, opt => opt.MapFrom(src => src.Gender));
         }
     }
