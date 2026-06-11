@@ -23,7 +23,7 @@ jobs:
         uses: docker/build-push-action@v7
         with:
           context: .
-          file: Deploying .Net Microservices to Kubernetes/ShoppingCart/Shopping.Client/Dockerfile
+          file: "Deploying .Net Microservices to Kubernetes/ShoppingCart/Shopping.Client/Dockerfile"
           target: build
           load: true
 
@@ -31,7 +31,7 @@ jobs:
         uses: docker/build-push-action@v7
         with:
           context: .
-          file: Deploying .Net Microservices to Kubernetes/ShoppingCart/Shopping.Client/Dockerfile
+          file: "Deploying .Net Microservices to Kubernetes/ShoppingCart/Shopping.Client/Dockerfile"
           platforms: linux/amd64,linux/arm64
           push: true
           target: final
