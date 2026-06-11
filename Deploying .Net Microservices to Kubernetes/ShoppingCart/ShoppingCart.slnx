@@ -1,1 +1,3 @@
-<Solution />
+<Solution>
+  <Project Path="Shopping.Client/Shopping.Client.csproj" />
+</Solution>
