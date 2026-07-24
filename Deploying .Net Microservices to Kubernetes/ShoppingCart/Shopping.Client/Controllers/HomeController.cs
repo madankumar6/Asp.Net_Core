@@ -1,5 +1,4 @@
 using Microsoft.AspNetCore.Mvc;
-using Shopping.Client.Data;
 using Shopping.Client.Models;
 using System.Diagnostics;
 
@@ -7,9 +6,19 @@ namespace Shopping.Client.Controllers
 {
     public class HomeController : Controller
     {
-        public IActionResult Index()
+        private readonly HttpClient _httpClient;
+        private readonly ILogger<HomeController> _logger;
+
+        public HomeController(IHttpClientFactory httpClientFactory, ILogger<HomeController> logger)
         {
-            return View(ProductContext.Products);
+            _httpClient = httpClientFactory.CreateClient("ShoppingApiClient");
+            _logger = logger;
+        }
+
+        public async Task<IActionResult> Index()
+        {
+            var products = await _httpClient.GetFromJsonAsync<List<Product>>("Product");
+            return View(products);
         }
 
         public IActionResult Privacy()

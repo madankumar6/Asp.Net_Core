@@ -1,3 +1,7 @@
 <Solution>
+  <Project Path="docker-compose.dcproj">
+    <Build />
+  </Project>
+  <Project Path="Shopping.Api/Shopping.Api.csproj" />
   <Project Path="Shopping.Client/Shopping.Client.csproj" />
 </Solution>

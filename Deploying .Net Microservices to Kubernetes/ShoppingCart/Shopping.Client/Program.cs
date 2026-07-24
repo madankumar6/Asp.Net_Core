@@ -1,5 +1,10 @@
 var builder = WebApplication.CreateBuilder(args);
 
+builder.Services.AddHttpClient("ShoppingApiClient", client =>
+{
+    client.BaseAddress = new Uri(uriString: builder.Configuration["ShoppingApi:BaseUrl"]);
+});
+
 // Add services to the container.
 builder.Services.AddControllersWithViews();
 
