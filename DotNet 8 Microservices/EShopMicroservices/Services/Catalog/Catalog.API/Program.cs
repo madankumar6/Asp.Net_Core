@@ -1,5 +1,6 @@
-using BuildingBlocks.Behaviors;
 using BuildingBlocks.Exceptions.Handler;
+using Catalog.API.Data;
+using HealthChecks.UI.Client;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -10,6 +11,7 @@ builder.Services.AddMediatR(config =>
 {
     config.RegisterServicesFromAssembly(assembly);
     config.AddOpenBehavior(typeof(ValidationBehavior<,>));
+    config.AddOpenBehavior(typeof(LoggingBehavior<,>));
 });
 
 builder.Services.AddValidatorsFromAssembly(assembly);
@@ -21,7 +23,15 @@ builder.Services.AddMarten(config =>
     config.Connection(builder.Configuration.GetConnectionString("Database")!);
 }).UseLightweightSessions();
 
+if (builder.Environment.IsDevelopment())
+{
+    builder.Services.InitializeMartenWith<CatalogInitialData>();
+}
+
 builder.Services.AddExceptionHandler<CustomExceptionHandler>();
+
+builder.Services.AddHealthChecks()
+    .AddNpgSql(builder.Configuration.GetConnectionString("Database")!);
 
 var app = builder.Build();
 
@@ -29,6 +39,7 @@ var app = builder.Build();
 //app.MapGet("/", () => "Hello World!");
 app.MapCarter();
 
+// This will ensure that the exception handler middleware is registered and will handle exceptions globally.
 app.UseExceptionHandler(options => { });
 
 //app.UseExceptionHandler(exceptionHandlerApp =>
@@ -58,5 +69,11 @@ app.UseExceptionHandler(options => { });
 //        await context.Response.WriteAsJsonAsync(problemDetails);
 //    });
 //});
+
+app.UseHealthChecks("/health", 
+    new Microsoft.AspNetCore.Diagnostics.HealthChecks.HealthCheckOptions 
+    { 
+        ResponseWriter = UIResponseWriter.WriteHealthCheckUIResponse
+    });
 
 app.Run();

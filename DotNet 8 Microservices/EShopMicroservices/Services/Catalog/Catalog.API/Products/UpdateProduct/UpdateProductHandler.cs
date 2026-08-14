@@ -20,17 +20,14 @@ namespace Catalog.API.Products.UpdateProduct
         }
     }
 
-    public class UpdateProductCommandHandler(IDocumentSession session, ILogger<UpdateProductCommandHandler> logger) : ICommandHandler<UpdateProductCommand, UpdateProductResult>
+    public class UpdateProductCommandHandler(IDocumentSession session) : ICommandHandler<UpdateProductCommand, UpdateProductResult>
     {
         public async Task<UpdateProductResult> Handle(UpdateProductCommand command, CancellationToken cancellationToken)
         {
-            logger.LogInformation($"UpdateProductCommandHandler.Handle method called with the {command}");
-
             var product = await session.LoadAsync<Product>(command.ProductId, cancellationToken);
             
             if (product is null)
             {
-                logger.LogWarning($"Product with Id {command.ProductId} not found.");
                 return new UpdateProductResult(IsSuccess: false);
             }
 
@@ -41,8 +38,6 @@ namespace Catalog.API.Products.UpdateProduct
 
             session.Update(product);
             await session.SaveChangesAsync(cancellationToken);
-            
-            logger.LogInformation($"Product with Id {command.ProductId} updated successfully.");
             
             return new UpdateProductResult(IsSuccess: true);
         }
