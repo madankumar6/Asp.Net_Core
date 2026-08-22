@@ -9,6 +9,9 @@
   <Folder Name="/Services/Catalog/">
     <Project Path="Services/Catalog/Catalog.API/Catalog.API.csproj" />
   </Folder>
+  <Folder Name="/Services/Discount/">
+    <Project Path="Services/Discount/Discount.Grpc/Discount.Grpc.csproj" Id="ba61867f-58ad-4acc-b732-04aa06eca41e" />
+  </Folder>
   <Project Path="docker-compose.dcproj">
     <Build />
   </Project>
