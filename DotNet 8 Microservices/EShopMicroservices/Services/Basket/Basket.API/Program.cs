@@ -7,9 +7,10 @@ var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 
-//Application Services
+//Cross-Cutting Services
 builder.Services.AddExceptionHandler<CustomExceptionHandler>();
 
+//Application Services
 var assembly = typeof(Program).Assembly;
 
 builder.Services.AddMediatR(config =>

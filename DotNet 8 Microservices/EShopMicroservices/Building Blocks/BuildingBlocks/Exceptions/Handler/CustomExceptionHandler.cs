@@ -2,7 +2,6 @@
 using Microsoft.AspNetCore.Diagnostics;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
-using System;
 
 namespace BuildingBlocks.Exceptions.Handler
 {
