@@ -10,3 +10,6 @@ global using Order.Domain.Events;
 global using Microsoft.EntityFrameworkCore;
 global using Order.Application.Extensions;
 global using BuildingBlocks.Pagination;
+global using BuildingBlocks.Messaging.Events;
+global using MassTransit;
+global using Order.Domain.Enums;

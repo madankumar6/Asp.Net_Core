@@ -1,14 +1,12 @@
 using BuildingBlocks.Behaviors;
 using BuildingBlocks.Exceptions.Handler;
+using BuildingBlocks.Messaging.MassTransit;
 using Discount.Grpc;
 using HealthChecks.UI.Client;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
-
-//Cross-Cutting Services
-builder.Services.AddExceptionHandler<CustomExceptionHandler>();
 
 //Application Services
 var assembly = typeof(Program).Assembly;
@@ -31,7 +29,6 @@ builder.Services.AddMarten(opts =>
     opts.Schema.For<ShoppingCart>().Identity(x => x.UserName);
 })
 .UseLightweightSessions();
-
 
 builder.Services.AddScoped<IBasketRepository, BasketRepository>();
 builder.Services.Decorate<IBasketRepository, CachedBasketRepository>();
@@ -62,6 +59,12 @@ builder.Services.AddGrpcClient<DiscountProtoService.DiscountProtoServiceClient>(
     return handler;
 });
 
+// Async Communication Services
+builder.Services.AddMessageBroker(builder.Configuration);
+
+//Cross-Cutting Services
+builder.Services.AddExceptionHandler<CustomExceptionHandler>();
+
 builder.Services.AddHealthChecks()
     .AddNpgSql(builder.Configuration.GetConnectionString("Database")!)
     .AddRedis(builder.Configuration.GetConnectionString("Redis")!, name: "Redis", tags: new[] { "redis" });
@@ -70,6 +73,8 @@ var app = builder.Build();
  
 // Configure the HTTP request pipeline.
 app.MapCarter();
+
+
 
 // This will ensure that the exception handler middleware is registered and will handle exceptions globally.
 app.UseExceptionHandler(options => { });
