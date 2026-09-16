@@ -20,7 +20,7 @@ namespace Order.API
             return services;
         }
 
-        public static WebApplication UseApiServices(this WebApplication app)
+        public static WebApplication UseApiServices(this WebApplication app, bool isProduction = false)
         {
             // Configure the HTTP request pipeline.
             //if (app.Environment.IsDevelopment())
@@ -32,7 +32,17 @@ namespace Order.API
             // This will ensure that the exception handler middleware is registered and will handle exceptions globally.
             app.UseExceptionHandler(options => { });
 
-            app.UseHttpsRedirection();
+            // Check if the app is running inside a Docker container
+            // DOTNET_RUNNING_IN_CONTAINER:
+            // The official .NET Docker images automatically set this environment variable to true at runtime.
+            var isDocker = Environment.GetEnvironmentVariable("DOTNET_RUNNING_IN_CONTAINER") == "true";
+
+            if (!isDocker)
+            {
+                // Enforce HTTPS redirection only when NOT in Docker
+                app.UseHttpsRedirection();
+            }
+
             app.UseAuthorization();
             app.MapControllers();
 

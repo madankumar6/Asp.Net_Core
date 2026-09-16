@@ -74,8 +74,6 @@ var app = builder.Build();
 // Configure the HTTP request pipeline.
 app.MapCarter();
 
-
-
 // This will ensure that the exception handler middleware is registered and will handle exceptions globally.
 app.UseExceptionHandler(options => { });
 
