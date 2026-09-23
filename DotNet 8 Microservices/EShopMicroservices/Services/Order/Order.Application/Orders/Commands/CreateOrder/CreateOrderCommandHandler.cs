@@ -26,7 +26,12 @@ namespace Order.Application.Orders.Commands.CreateOrder
                 billingAddress,
                 Payment.Of(orderDto.Payment.CardName, orderDto.Payment.CardNumber, orderDto.Payment.Expiration, orderDto.Payment.Cvv, orderDto.Payment.PaymentMethod)
             );
-            
+
+            foreach (var orderItemDto in orderDto.OrderItems)
+            {
+                newOrder.AddOrderItem(ProductId.Of(orderItemDto.ProductId), orderItemDto.Quantity, orderItemDto.Price);
+            }
+
             return newOrder;
         }
     }

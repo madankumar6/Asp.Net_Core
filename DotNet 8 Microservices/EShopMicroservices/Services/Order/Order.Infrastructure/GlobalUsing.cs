@@ -2,3 +2,4 @@
 global using Microsoft.Extensions.Configuration;
 global using Microsoft.Extensions.DependencyInjection;
 global using Order.Infrastructure.Data;
+global using Order.Infrastructure.Data;

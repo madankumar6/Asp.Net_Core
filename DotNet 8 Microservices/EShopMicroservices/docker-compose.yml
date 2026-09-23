@@ -44,6 +44,12 @@ services:
       context: .
       dockerfile: ApiGateways/YarpApiGateway/Dockerfile
 
+  shopping.web:
+    image: ${DOCKER_REGISTRY-}shoppingweb
+    build:
+      context: .
+      dockerfile: WebApps/Shopping.Web/Dockerfile
+
 networks:
   ecommerce-net:
     driver: bridge
@@ -52,3 +58,4 @@ volumes:
   postgres_catalog:
   postgres_basket:
   sqlite_data:
+
